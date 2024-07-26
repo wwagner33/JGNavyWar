@@ -17,3 +17,11 @@ class Player:
         self.username = username
         self.password = password
         self.score = 0
+
+    def update_score(self, points: int):
+        """
+        Atualiza a pontuação do jogador.
+
+        :param points: Pontos a serem adicionados à pontuação do jogador.
+        """
+        self.score += points

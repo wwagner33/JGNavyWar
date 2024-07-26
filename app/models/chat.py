@@ -1,3 +1,5 @@
+from .player import Player
+
 class Chat:
     """
     Classe que representa o chat do jogo JGNavyWar.

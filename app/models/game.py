@@ -1,5 +1,10 @@
-import random
 from datetime import datetime
+import random
+from .board import Board
+from .player import Player
+from .ship import Ship
+from .chat import Chat
+from .move import Move
 
 class Game:
     """
@@ -85,6 +90,6 @@ class Game:
         """
         for player in self.players:
             opponent = self.get_opponent(player)
-            if all(ship.is_sunk for ship in self.boards[opponent].ships):
+            if self.boards[opponent].all_ships_sunk():
                 return True
         return False

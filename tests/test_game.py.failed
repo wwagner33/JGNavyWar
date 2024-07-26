@@ -1,0 +1,49 @@
+import unittest
+from app.models.game import Game
+from app.models.player import Player
+from app.models.ship import Ship
+
+class TestGame(unittest.TestCase):
+    def test_start_game(self):
+        players = [
+            Player(1, "Wellington", "well@example.com", "wwagner", "password123"),
+            Player(2, "Patricia", "pat@example.com", "ppaula", "password123")
+        ]
+        game = Game(players)
+        game.start()
+        self.assertEqual(len(game.players), 2)
+        for player in game.players:
+            board = game.boards[player]
+            self.assertEqual(len(board.ships), 7)  # Total de 7 navios
+            for ship in board.ships:
+                self.assertTrue(ship.positions)  # Verifica se os navios têm posições
+
+    def test_make_move(self):
+        players = [
+            Player(1, "Wellington", "well@example.com", "wwagner", "password123"),
+            Player(2, "Patricia", "pat@example.com", "ppaula", "password123")
+        ]
+        game = Game(players)
+        game.start()
+        ship = Ship("Porta-aviões", 8)
+        game.boards[players[1]].place_ship(ship, (0, 0), "horizontal")
+        result = game.make_move(players[0], (0, 0))
+        self.assertEqual(result, 'hit')
+        result = game.make_move(players[0], (1, 1))
+        self.assertEqual(result, 'miss')
+
+    def test_check_winner(self):
+        players = [
+            Player(1, "Wellington", "well@example.com", "wwagner", "password123"),
+            Player(2, "Patricia", "pat@example.com", "ppaula", "password123")
+        ]
+        game = Game(players)
+        game.start()
+        ship = Ship("Porta-aviões", 8)
+        game.boards[players[1]].place_ship(ship, (0, 0), "horizontal")
+        for i in range(8):
+            game.make_move(players[0], (0, i))
+        self.assertTrue(game.check_winner())
+
+if __name__ == "__main__":
+    unittest.main()

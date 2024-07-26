@@ -1,3 +1,5 @@
+from .ship import Ship
+
 class Board:
     """
     Classe que representa o tabuleiro de um jogador no jogo JGNavyWar.
@@ -18,16 +20,14 @@ class Board:
 
         :param ship: Instância da classe Ship a ser posicionada.
         :param start: Posição inicial do navio (linha, coluna).
-        :param direction: Direção do navio ("horizontal" ou "vertical").
+        :param direction: Direção do navio ('horizontal' ou 'vertical').
         :return: Verdadeiro se o navio foi posicionado com sucesso, falso caso contrário.
         """
-        # Verifica se o navio cabe no tabuleiro na direção escolhida
         if direction == "horizontal" and start[1] + ship.size > self.size:
             return False
         if direction == "vertical" and start[0] + ship.size > self.size:
             return False
 
-        # Verifica se as células estão disponíveis
         if direction == "horizontal":
             for i in range(ship.size):
                 if self.grid[start[0]][start[1] + i] != "~":
@@ -37,7 +37,6 @@ class Board:
                 if self.grid[start[0] + i][start[1]] != "~":
                     return False
 
-        # Posiciona o navio
         ship.place(start, direction)
         for pos in ship.positions:
             self.grid[pos[0]][pos[1]] = "S"
@@ -49,7 +48,7 @@ class Board:
         Processa um ataque no tabuleiro.
 
         :param position: Posição do ataque (linha, coluna).
-        :return: Resultado do ataque ("hit" ou "miss").
+        :return: Resultado do ataque ('hit' ou 'miss').
         """
         if self.grid[position[0]][position[1]] == "S":
             self.grid[position[0]][position[1]] = "X"
@@ -59,3 +58,11 @@ class Board:
                 )
             return "hit"
         return "miss"
+
+    def all_ships_sunk(self) -> bool:
+        """
+        Verifica se todos os navios no tabuleiro foram afundados.
+
+        :return: Verdadeiro se todos os navios foram afundados, falso caso contrário.
+        """
+        return all(ship.is_sunk for ship in self.ships)

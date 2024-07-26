@@ -1,4 +1,5 @@
 from datetime import datetime
+from .player import Player
 
 class Move:
     """
